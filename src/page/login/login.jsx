@@ -101,13 +101,16 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/usr/select",null, {params : {
-      usrEmail : formData.email,
-      usrPwd : formData.password
+    axios.post("http://localhost:8080/api/auth/login",null, {params : {
+      userId : formData.email,
+      userPwd : formData.password
     }} 
     )
     .then(res =>{
         console.log(res)
+        if(res.status === 200){
+          window.location.href = "/";
+        }
     }).catch(error => {
         console.log(error)
     })
