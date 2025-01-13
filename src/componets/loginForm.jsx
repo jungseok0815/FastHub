@@ -16,12 +16,17 @@ function AuthForm() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const api = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true,  // 쿠키 처리를 위해 필수
+});
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
       console.log("Logging in with:", formData);
       e.preventDefault();
-      axios.post("http://localhost:8080/api/auth/login",null, {params : {
+      api.post("/api/auth/login",null, {params : {
         userId : formData.email,
         userPwd : formData.password
       }} 

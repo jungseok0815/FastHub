@@ -1,4 +1,6 @@
-import React from "react";
+
+import React, { useEffect  } from "react";
+import axios from 'axios';
 import Navbar from '../../componets/navbar'; // 상단 네비게이션
 import Hero from '../../componets/hero'; // 메인 배너
 import ProductCard from "../../componets/productCard"; // 상품 카드
@@ -11,6 +13,29 @@ function App() {
     { id: 2, name: "Adidas Yeezy Boost", price: "₩300,000", image: "https://via.placeholder.com/150" },
     { id: 3, name: "Jordan 1 Retro High", price: "₩250,000", image: "https://via.placeholder.com/150" },
   ];
+
+  useEffect(() => {
+    // 컴포넌트 마운트 시 한 번만 실행
+    checkAuth();
+  }, []); // 빈 배열을 전달하여 최초 1회만 실행
+
+  const checkAuth = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/auth/validate', {
+        withCredentials: true // 쿠키 포함
+      });
+      console.log(response)
+      console.log(response.data)
+      if (response.data.authenticated) {
+        // 인증 성공 처리
+        console.log('인증된 사용자:', response.data);
+      }
+    } catch (error) {
+      // 에러 처리
+      console.error('인증 체크 실패:', error);
+    }
+  };
+
 
   return (
     <div className="app">

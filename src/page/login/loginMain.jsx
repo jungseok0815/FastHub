@@ -2,6 +2,7 @@ import React from "react";
 import LoginForm from "../../componets/loginForm";
 import "../../css/loginMain.css"
 function loginMain(){
+
     return (
         <div className="loginMain">
           <div className="auth-container">
