@@ -7,6 +7,7 @@ function Navbar() {
       <ul className="nav-links">
         <li><a href="#shop">Shop</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="#about">마이페이지</a></li>
         <li><a href="/login">Login</a></li>
       </ul>
     </nav>

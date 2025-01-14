@@ -1,0 +1,54 @@
+/* Navbar 스타일 */
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+    width: 70%;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .navbar-menu {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .nav-link:hover {
+    color: #f0a500;
+  }
+  
+  .nav-link.active {
+    text-decoration: underline;
+    color: #f0a500;
+  }
+  
+  /* Content 스타일 */
+  .content-container {
+    width: 70%;
+   
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+  }
+  
+  .content {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+  }
+  

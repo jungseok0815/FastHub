@@ -24,7 +24,6 @@ function AuthForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      console.log("Logging in with:", formData);
       e.preventDefault();
       api.post("/api/auth/login",null, {params : {
         userId : formData.email,
@@ -32,8 +31,9 @@ function AuthForm() {
       }} 
       )
       .then(res =>{
-          console.log(res)
+          const userInfo = res.data.data;   
           if(res.status === 200){
+            userInfo.authName === "ROLE_USER" ? window.location.href ="/" : window.location.href = "/manager"
             window.location.href = "/";
           }
       }).catch(error => {
