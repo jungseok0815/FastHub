@@ -1,9 +1,9 @@
 
 import React, { useEffect  } from "react";
 import axios from 'axios';
-import Navbar from '../../componets/navbar'; // 상단 네비게이션
-import Hero from '../../componets/hero'; // 메인 배너
-import ProductCard from "../../componets/productCard"; // 상품 카드
+import Navbar from '../../componets/user/navbar'; // 상단 네비게이션
+import Hero from '../../componets/user/hero'; // 메인 배너
+import ProductCard from "../../componets/user/productCard"; // 상품 카드
 import "../../css/App.css";
 
 function App() {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/Hero.css";
+import "../../css/user/Hero.css";
 
 function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);

@@ -29,7 +29,7 @@ const AdminNavbar = () => {
   return (
     <div>
       {/* Navbar */}
-      <header className="navbar">
+      <header className="navbar_manager">
         <nav className="navbar-menu">
           <span
             className={`nav-link ${activePage === '상품 관리' ? 'active' : ''}`}
