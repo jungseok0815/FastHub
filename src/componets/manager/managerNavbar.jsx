@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../css/manager/managerNavbar.css';
 
 // 동적 컴포넌트 import
-import ProductManagement from '../../componets/manager/ProductManager';
+import ProductManagement from './productManager/ProductManager';
 import BrandManagement from '../../componets/manager/BrandManager';
 import OrderManagement from '../../componets/manager/OrderManager';
 import SalesManagement from '../../componets/manager/SalesManager';
