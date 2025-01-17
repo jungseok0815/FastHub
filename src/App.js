@@ -1,26 +1,30 @@
 
 import './App.css';
-import React from 'react';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Login from './page/login/loginMain';
 import Main from './page/main/main';
 import Manager from './page/manager/Manager';
-import ProductItemCard from './componets/manager/productManager/ProductItemCard'
+import PrivateMasterRoute from './Route/PrivateMasterRoute';
+import { AuthProvider } from './config/Context/UserContext';
+import Userprifle from './page/login/testProfile'
 
 function App() {
   return (
-    <div className="App">
-        <div>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<Main/>}/>
-              <Route path='/login' element={<Login/>}/>
-              <Route path='/Manager' element={<Manager/>}/>
-              <Route path='/Manager/test' element={<ProductItemCard/>} />
-              </Routes>
-          </BrowserRouter>  
-        </div>
-    </div>
+      <div className="App">
+          <div>
+            <AuthProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path='/' element={<Main/>}/>
+                  <Route path='/login' element={<Login/>}/>
+                  <Route path='/admin' element={<PrivateMasterRoute><Manager/></PrivateMasterRoute>}/>
+                  <Route path='/test' element={<Userprifle/>}/>
+                  </Routes>
+              </BrowserRouter>  
+            </AuthProvider>
+          </div>
+      </div>
+   
   );
 }
 

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, {  useState,createContext, Context } from "react";
 import "../../css/login/loginForm.css"
-import axios from 'axios';
+import api from '../../config/ApiConfig'
 
+import { AuthProvider, useAuth } from "../../config/Context/UserContext";
 function AuthForm() {
+  const { login } = useAuth()
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
@@ -16,11 +18,6 @@ function AuthForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const api = axios.create({
-    baseURL: 'http://localhost:8080',
-    withCredentials: true,  // 쿠키 처리를 위해 필수
-});
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
@@ -31,17 +28,17 @@ function AuthForm() {
       }} 
       )
       .then(res =>{
-          const userInfo = res.data.data;   
-          if(res.status === 200){
-            userInfo.authName === "ROLE_USER" ? window.location.href ="/" : window.location.href = "/manager"
-            window.location.href = "/";
-          }
+        const userInfo = res.data.data;   
+        login(userInfo)
+        if(userInfo.authName === "ROLE_USER") window.location.href = "/"
+        if(userInfo.authName === "ROLE_ADMIN") window.location.href = "/admin"        
       }).catch(error => {
-          console.log(error)
+          const errorResult = error.response.data
+          alert(errorResult.msg)
       })
     } else {
       e.preventDefault();
-      axios.post("http://localhost:8080/api/auth/join",null, {params : {
+      api.post("/api/auth/join",null, {params : {
         userId : formData.email,
         userPwd : formData.password,
         userNm : formData.username,
@@ -53,11 +50,9 @@ function AuthForm() {
           if(res.status === 200 && res.data.success){
             alert("회원가입이 완료되었습니다!")
             window.location.reload()
-          }else{
-            alert("회원가입에 실패했습니다!")
           }
       }).catch(error => {
-          console.log(error)
+          console.log(error.reponse)
       })
     }
   };
@@ -110,7 +105,7 @@ function AuthForm() {
               />
             </div>
           </>
-        
+
         )}
 
         <div className="form-group">
