@@ -1,10 +1,13 @@
 import React, {  useState,createContext, Context } from "react";
 import "../../css/login/loginForm.css"
+import { useNavigate } from 'react-router-dom';
 import api from '../../config/ApiConfig'
 
-import { AuthProvider, useAuth } from "../../config/Context/UserContext";
+import { useAuth } from "../../config/Context/UserContext";
 function AuthForm() {
   const { login } = useAuth()
+  const navigate = useNavigate();
+
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,8 +33,8 @@ function AuthForm() {
       .then(res =>{
         const userInfo = res.data.data;   
         login(userInfo)
-        if(userInfo.authName === "ROLE_USER") window.location.href = "/"
-        if(userInfo.authName === "ROLE_ADMIN") window.location.href = "/admin"        
+        if(userInfo.authName === "ROLE_USER") navigate("/")
+        if(userInfo.authName === "ROLE_ADMIN") navigate("/admin")        
       }).catch(error => {
           const errorResult = error.response.data
           alert(errorResult.msg)

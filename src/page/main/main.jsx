@@ -24,8 +24,6 @@ function App() {
       const response = await axios.get('http://localhost:8080/api/auth/validate', {
         withCredentials: true // 쿠키 포함
       });
-      console.log(response.data)
-      console.log(response.data.data.userInfoDto.userId)
       if (response.data.authenticated) {
         // 인증 성공 처리
         console.log('인증된 사용자:', response.data);

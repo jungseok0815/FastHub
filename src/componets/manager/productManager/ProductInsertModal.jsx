@@ -3,46 +3,41 @@ import Modal from "../../modal/Modal";
 import { FiUpload } from "react-icons/fi";
 import { BiReset } from "react-icons/bi";
 import axios from "axios";
+import api from "../../../config/ApiConfig";
 
 const ProductInsertModal = ({isOpen, onClose}) =>{
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({ 
         productName: "",
         description: "",
         price: "",
         category: "",
-        image: null
+        image : null
       });
-      const api = axios.create({
-        baseURL: 'http://localhost:8080',
-        withCredentials: true,  // 쿠키 처리를 위해 필수
-    });
+      
       const [imagePreview, setImagePreview] = useState(null);
       const [errors, setErrors] = useState({});
     
       const categories = [
-        "Electronics",
-        "Furniture",
-        "Clothing",
-        "Books",
-        "Sports",
-        "Home & Garden"
+        "BOTTOM",
       ];
     
       const handleInputChange = (e) => {
         const { name, value } = e.target;
+     
         setFormData((prev) => ({
           ...prev,
-          [name]: value
+          [name]: value,   // 현재 입력 필드 업데이트
         }));
         validateField(name, value);
       };
     
       const handleImageChange = (e) => {
         const file = e.target.files[0];
+        console.log(file)
         if (file) {
           setFormData((prev) => ({
             ...prev,
-            image: file
+            image : file         
           }));
           const reader = new FileReader();
           reader.onloadend = () => {
@@ -99,12 +94,11 @@ const ProductInsertModal = ({isOpen, onClose}) =>{
         if (!formData.category) {
           newErrors.category = "Please select a category";
         }
-        console.log(formData.image);
+        console.log(formData)
         if (Object.keys(newErrors).length === 0) {
-          console.log("Form submitted:", formData);
-          api.post("http://localhost:8080/api/product/insert",formData,{
+          api.post("/api/product/insert",formData,{
             headers: {
-                'Content-Type': 'multipart/form-data'  // 이렇게 들어가야함!
+                'Content-Type': 'multipart/form-data'  
               }
       
           }).then(res=>{

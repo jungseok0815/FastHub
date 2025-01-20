@@ -1,9 +1,24 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error('Failed to restore user from localStorage:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   // 로그인 함수
   const login = (userData) => {
@@ -17,6 +32,11 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('user');
   };
+
+    // 로딩 중일 때는 아무것도 렌더링하지 않음
+    if (loading) {
+      return null; // 또는 로딩 스피너 컴포넌트
+    }
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

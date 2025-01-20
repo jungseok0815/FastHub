@@ -5,10 +5,10 @@ import Login from './page/login/loginMain';
 import Main from './page/main/main';
 import Manager from './page/manager/Manager';
 import PrivateMasterRoute from './Route/PrivateMasterRoute';
-import { AuthProvider } from './config/Context/UserContext';
-import Userprifle from './page/login/testProfile'
+import { AuthProvider } from './config/Context/UserContext'; 
 
 function App() {
+
   return (
       <div className="App">
           <div>
@@ -17,8 +17,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Main/>}/>
                   <Route path='/login' element={<Login/>}/>
-                  <Route path='/admin' element={<PrivateMasterRoute><Manager/></PrivateMasterRoute>}/>
-                  <Route path='/test' element={<Userprifle/>}/>
+                  <Route path='/admin' element={<PrivateMasterRoute component={<Manager />}/>}/>
                   </Routes>
               </BrowserRouter>  
             </AuthProvider>
