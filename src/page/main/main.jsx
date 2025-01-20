@@ -1,9 +1,9 @@
 
 import React, { useEffect  } from "react";
 import axios from 'axios';
-import Navbar from '../../componets/user/navbar'; // 상단 네비게이션
-import Hero from '../../componets/user/hero'; // 메인 배너
-import ProductCard from "../../componets/user/productCard"; // 상품 카드
+import Navbar from '../../componets/main/navbar'; // 상단 네비게이션
+import Hero from '../../componets/main/hero'; // 메인 배너
+import ProductCard from "../../componets/main/productCard"; // 상품 카드
 import "../../css/App.css";
 
 function App() {
@@ -39,10 +39,8 @@ function App() {
     <div className="app">
       {/* 상단 네비게이션 */}
       <Navbar />
-      
       {/* 메인 배너 섹션 */}
       <Hero />
-      
       {/* 상품 카드 리스트 */}
       <div className="product-list">
         {products.map((product) => (
