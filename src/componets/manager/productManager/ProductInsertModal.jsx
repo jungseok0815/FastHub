@@ -33,7 +33,6 @@ const ProductInsertModal = ({isOpen, onClose}) =>{
     
       const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log(file)
         if (file) {
           setFormData((prev) => ({
             ...prev,
@@ -94,7 +93,6 @@ const ProductInsertModal = ({isOpen, onClose}) =>{
         if (!formData.category) {
           newErrors.category = "Please select a category";
         }
-        console.log(formData)
         if (Object.keys(newErrors).length === 0) {
           api.post("/api/product/insert",formData,{
             headers: {
@@ -102,9 +100,12 @@ const ProductInsertModal = ({isOpen, onClose}) =>{
               }
       
           }).then(res=>{
-            if(res.status === 200) console.log(res.data)
-          
+            if(res.status === 200) {
+                alert("상품등록 성공!")
+                onClose();
+            }
             }).catch((err) =>{
+                alert("상품등록 실패패")
                 console.log(err)
             })
         } else {

@@ -1,83 +1,42 @@
-import React, { useState } from "react";
-import {  FaHeart, FaPlus } from "react-icons/fa";
+import React from 'react';
 
-const ProductItemCard = () => {
-  const [favorites, setFavorites] = useState([]);
-  // Existing appetizers array and other functions remain unchanged...
-  const appetizers = [
-    {
-      id: 1,
-      name: "Bruschetta Classic",
-      price: "$12.99",
-      description: "Fresh tomatoes, garlic, basil on toasted bread",
-      image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f",
-      isChefSuggestion: true,
-      allergens: ["Gluten", "Dairy"],
-      ingredients: "Fresh tomatoes, garlic, extra virgin olive oil, fresh basil, baguette, salt, black pepper",
-      nutritionalInfo: "Calories: 220kcal | Protein: 6g | Carbs: 24g | Fat: 12g",
-      quantity: 0
-    },
-    // ... rest of the appetizers array remains the same
-  ];
-
-  // All existing functions remain the same (addToCart, removeFromCart, updateQuantity, toggleFavorite, handleBack)
+const ProductList = ({ products }) => {
   return (
-    <div className="min-h-screen bg-gray-950">
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
-          {appetizers.map((item) => (
-            <div key={item.id} className="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-300 border border-gray-800 hover:border-[#f5a00c]">
-              <div className="md:flex">
-                <div className="md:w-1/3">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
-                  />
-                </div>
-                <div className="p-8 md:w-2/3">
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h3 className="text-2xl font-semibold text-white mb-3">{item.name}</h3>
-                      {item.isChefSuggestion && (
-                        <span className="bg-[#f5a00c] text-black text-sm px-4 py-1.5 rounded-full font-medium">
-                          Sugerencia del chef
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-xl font-bold text-[#f5a00c]">{item.price}</span>
-                  </div>
-                  <p className="text-gray-300 mb-8 text-lg">{item.description}</p>
-                  
-                  <div className="flex justify-between items-center">
-                    <button 
-                      onClick={() => {
-                      
-                      }}
-                      className="bg-[#f5a00c] hover:bg-[#e59200] text-white px-8 py-3 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
-                      Ver más
-                    </button>
-                    
-                    <div className="flex space-x-6">
-                      <button
-                        className={`p-3 rounded-full ${favorites.includes(item.id) ? "text-red-500" : "text-gray-400"} hover:text-red-500 transition-colors duration-300`}
-                       > <FaHeart className="text-2xl" />
-                      </button>
-                      <button 
-                        className="p-3 rounded-full bg-[#f5a00c] text-white hover:bg-[#e59200] transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
-                      >
-                        <FaPlus className="text-2xl" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+    <div className="container mx-auto  px-4 py-7">
+      <h2 className="text-xl font-bold text-gray-500 mb-6">상품 목록</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+            <div className="relative h-24">
+              <img
+                src={product.images.length === 0 ? "/api/placeholder/400/320" :`http://loaclhost:8080/img/${product.images[0].imgNm}`}
+                alt={product.productNm}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-2">
+              <h3 className="text font-semibold text-gray-800 mb-2">
+                {product.productNm}
+              </h3>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">{product.category}</span>
+                <span className="text font-bold text-blue-400">
+                  ₩{product.productPrice?.toLocaleString()}
+                </span>
+              </div>
+              <div className="mt-3 flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  재고: {product.productAuantity}개
+                </span>
+               
               </div>
             </div>
-          ))}
-        </div>
-      </main>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ProductItemCard;
+
+export default ProductList;
