@@ -11,9 +11,6 @@ const ProductManagement = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleProductRegister =() =>{
-
-  }
 
   return <div>
       <SearchBar/>

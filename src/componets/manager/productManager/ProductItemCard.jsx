@@ -1,17 +1,31 @@
-import React from 'react';
+import {React, useState} from 'react';
+import ProductInsertModal from "./ProductInsertModal"
 
 const ProductList = ({ products }) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [product, serProduct] = useState(null)
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleDetail = (product) =>{
+    serProduct(product); 
+    handleOpenModal()
+  }
+
   return (
     <div className="container mx-auto  px-4 py-7">
       <h2 className="text-xl font-bold text-gray-500 mb-6">상품 목록</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
-            <div className="relative h-24">
+          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" onClick={() => handleDetail(product)}>
+            <div className="relative h-48">
               <img
-                src={product.images.length === 0 ? "/api/placeholder/400/320" :`http://loaclhost:8080/img/${product.images[0].imgNm}`}
+                src={product.images.length === 0 ? "/api/placeholder/400/320" :`http://localhost:8080/api/img/get?imgNm=${product.images[0].imgNm}`}
                 alt={product.productNm}
-                className="w-full h-full object-cover"
+                className="w-full object-cover h-full"
+               
               />
             </div>
             <div className="p-2">
@@ -26,7 +40,7 @@ const ProductList = ({ products }) => {
               </div>
               <div className="mt-3 flex justify-between items-center">
                 <span className="text-sm text-gray-500">
-                  재고: {product.productAuantity}개
+                  재고: {product.productQuantity}개
                 </span>
                
               </div>
@@ -34,7 +48,9 @@ const ProductList = ({ products }) => {
           </div>
         ))}
       </div>
+      <ProductInsertModal isOpen={isModalOpen} onClose={handleCloseModal} product={product} />
     </div>
+    
   );
 };
 

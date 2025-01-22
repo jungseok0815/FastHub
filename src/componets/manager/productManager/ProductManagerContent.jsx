@@ -9,7 +9,6 @@ const ProductManagerContent = () => {
       const fetchProducts = async () => {
         try {
             const response = await api.get("/api/product/list");
-            
             setProducts(response.data.data);
         } catch (error) {
             console.error("상품 목록 조회 실패:", error);
@@ -17,7 +16,6 @@ const ProductManagerContent = () => {
       };
       fetchProducts();
   }, [])
-  console.log(products)
 
   return (
    <content className="productManagerContent overflow-scroll px-[20px] scrollbar-hide" >

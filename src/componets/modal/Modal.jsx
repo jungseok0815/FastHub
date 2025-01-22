@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ isOpen, onClose, children, width = "600px", height = '800px' }) => {
+const Modal = ({ isOpen, onClose, children, width = "1000px", height = '500px' }) => {
   if (!isOpen) return null;
 
   return (
@@ -19,7 +19,7 @@ const Modal = ({ isOpen, onClose, children, width = "600px", height = '800px' })
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <div className="overflow-auto max-h-[90vh]">
+          <div className="overflow-auto  h-full">
             {children}
           </div>
         </div>

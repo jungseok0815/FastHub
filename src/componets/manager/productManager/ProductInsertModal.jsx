@@ -1,277 +1,244 @@
 import { Children, useState } from "react";
 import Modal from "../../modal/Modal";
-import { FiUpload } from "react-icons/fi";
-import { BiReset } from "react-icons/bi";
-import axios from "axios";
 import api from "../../../config/ApiConfig";
+import { ImagePlus } from 'lucide-react'
 
-const ProductInsertModal = ({isOpen, onClose}) =>{
-    const [formData, setFormData] = useState({ 
-        productName: "",
-        description: "",
-        price: "",
-        category: "",
-        image : null
-      });
+
+const ProductInsertModal = ({ isOpen, onClose, product }) => {
+  const [formData, setFormData] = useState({
+    productNm: "",
+    productPrice : "",
+    productQuantity : "",
+    productBrand : "",
+    productCode : "",
+    category: "",
+    image: []
+  });
+
+  const [imagePreview, setImagePreview] = useState([]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if(files.length > 4) return alert("사진은 최대 4장 등록 가능합니다!") 
+    if (files) {
+      setFormData((prev) => ({
+        ...prev,
+        image: files
+      }));
       
-      const [imagePreview, setImagePreview] = useState(null);
-      const [errors, setErrors] = useState({});
-    
-      const categories = [
-        "BOTTOM",
-      ];
-    
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-     
-        setFormData((prev) => ({
-          ...prev,
-          [name]: value,   // 현재 입력 필드 업데이트
-        }));
-        validateField(name, value);
-      };
-    
-      const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          setFormData((prev) => ({
-            ...prev,
-            image : file         
-          }));
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setImagePreview(reader.result);
-          };
-          reader.readAsDataURL(file);
+      const previewUrls = files.map((file) => URL.createObjectURL(file));
+      setImagePreview(previewUrls);
+    }
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+      api.post("/api/product/insert", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      };
-    
-      const validateField = (name, value) => {
-        let newErrors = { ...errors };
-    
-        switch (name) {
-          case "productName":
-            if (!value.trim()) {
-              newErrors.productName = "Product name is required";
-            } else {
-              delete newErrors.productName;
-            }
-            break;
-          case "price":
-            if (!value) {
-              newErrors.price = "Price is required";
-            } else if (Number(value) <= 0) {
-              newErrors.price = "Price must be greater than 0";
-            } else {
-              delete newErrors.price;
-            }
-            break;
-          case "category":
-            if (!value) {
-              newErrors.category = "Please select a category";
-            } else {
-              delete newErrors.category;
-            }
-            break;
-          default:
-            break;
-        }
-    
-        setErrors(newErrors);
-      };
-    
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        const newErrors = {};
-    
-        if (!formData.productName.trim()) {
-          newErrors.productName = "Product name is required";
-        }
-        if (!formData.price) {
-          newErrors.price = "Price is required";
-        }
-        if (!formData.category) {
-          newErrors.category = "Please select a category";
-        }
-        if (Object.keys(newErrors).length === 0) {
-          api.post("/api/product/insert",formData,{
-            headers: {
-                'Content-Type': 'multipart/form-data'  
-              }
-      
-          }).then(res=>{
-            if(res.status === 200) {
-                alert("상품등록 성공!")
-                onClose();
-            }
-            }).catch((err) =>{
-                alert("상품등록 실패패")
-                console.log(err)
-            })
-        } else {
-          setErrors(newErrors);
-        }
-      };
-    
-      const handleReset = () => {
-        setFormData({
-          productName: "",
-          description: "",
-          price: "",
-          category: "",
-          image: null
-        });
-        setImagePreview(null);
-        setErrors({});
-      };
 
+      }).then(res => {
+        if (res.status === 200) {
+          alert("상품등록 성공!")
+          onClose();
+        }
+      }).catch((err) => {
+        alert("상품등록 실패패")
+        console.log(err)
+      })
+  };
+  return (
+    <div >
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        width="800px"
+        height="500px">
+        <div className="bg-white rounded-lg w-full max-w-4xl">
+          <form onSubmit={handleSubmit} className="p-6">
+            <h2 className="text-2xl font-semibold mb-4">상품 등록</h2>
 
-    return (
-        <div>
-            <Modal
-             isOpen={isOpen}
-             onClose={onClose}
-             width="600px">   
-          <div className="px-6 py-8">
-            <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
-              상품 등록
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="productName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                 * 상품명
+            <div className="flex gap-6">
+              {/* 왼쪽: 이미지 업로드 섹션 */}
+              <div className="w-1/3">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  상품 이미지
                 </label>
-                <input
-                  type="text"
-                  id="productName"
-                  name="productName"
-                  value={formData.productName}
-                  onChange={handleInputChange}
-                  className={`mt-1 block w-full rounded-md shadow-sm py-2 px-3 border ${errors.productName ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                  placeholder="Enter product name"
-                  aria-label="Product Name"
-                />
-                {errors.productName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.productName}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                * 가격
-                </label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  className={`mt-1 block w-full rounded-md shadow-sm py-2 px-3 border ${errors.price ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                  placeholder="Enter product price"
-                  min="0"
-                  step="0.01"
-                  aria-label="Product Price"
-                />
-                {errors.price && (
-                  <p className="mt-1 text-sm text-red-500">{errors.price}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="category"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Category *
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className={`mt-1 block w-full rounded-md shadow-sm py-2 px-3 border ${errors.category ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                  aria-label="Product Category"
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                {errors.category && (
-                  <p className="mt-1 text-sm text-red-500">{errors.category}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Product Image
-                </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                  <div className="space-y-1 text-center">
-                    {imagePreview ? (
-                      <div className="mb-4">
-                        <img
-                          src={imagePreview}
-                          alt="Product preview"
-                          className="mx-auto h-32 w-32 object-cover rounded-md"
-                        />
+                <div className="space-y-3">
+                  <div className="relative">
+                    <input
+                      type="file"
+                      multiple
+                      className="hidden"
+                      id="imageUpload"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      required
+                    />
+                    <label
+                      htmlFor="imageUpload"
+                      className="block w-full h-64 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors"
+                    >
+                      <div className="flex flex-col items-center justify-center h-full">
+                        <ImagePlus className="w-8 h-8 text-gray-400" />
+                        <span className="mt-2 text-sm text-gray-500">이미지를 추가하세요</span>
+                        <span className="mt-1 text-xs text-gray-400">
+                          (최대 5MB, jpg/png 파일)
+                        </span>
                       </div>
-                    ) : (
-                      <FiUpload className="mx-auto h-12 w-12 text-gray-400" />
-                    )}
-                    <div className="flex text-sm text-gray-600">
-                      <label
-                        htmlFor="image"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
-                      >
-                        <span>Upload a file</span>
-                        <input
-                          id="image"
-                          name="image"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="sr-only"
-                          aria-label="Upload Product Image"
-                        />
-                      </label>
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
+                    </label>
                   </div>
+                  <div className="preview-container flex" style={{ marginTop: "20px" }}>
+                    {imagePreview.map((url, index)=>{
+                      return(
+                        <div className="h-16 mr-4 w-16 bg-gray-50 rounded-lg overflow-hidden">
+                        <img
+                          src={url}
+                          key={"productImg"+index}
+                          alt={`preview-${index}`}
+                          className="w-full h-full object-cover"
+                        />
+                        </div>
+                        )
+                    })}
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    * 이미지는 최대 4장까지 등록 가능합니다.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex space-x-4">
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Register Product
-                </button>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
-          </div>
-      
+              {/* 오른쪽: 상품 정보 입력 폼 */}
+              <div className="flex-1">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      상품명
+                    </label>
+                    <input
+                      type="text"
+                      name="productNm"
+                      value={formData.productNm}
+                      onChange={handleChange}
+                      placeholder="상품명을 입력하세요"
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
 
-            </Modal>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      카테고리
+                    </label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    >
+                      <option value="">선택하세요</option>
+                      <option value="TOP">상의</option>
+                      <option value="BOTTOM">하의</option>
+                      <option value="OUTER">아우터</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      브랜드
+                    </label>
+                    <input
+                      type="text"
+                      name="productBrand"
+                      value={formData.productBrand}
+                      onChange={handleChange}
+                      placeholder="브랜드명 입력"
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      상품코드
+                    </label>
+                    <input
+                      type="text"
+                      name="productCode"
+                      value={formData.productCode}
+                      onChange={handleChange}
+                      placeholder="상품코드 입력"
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      수량
+                    </label>
+                    <input
+                      type="number"
+                      name="productQuantity"
+                      value={formData.productQuantity}
+                      onChange={handleChange}
+                      placeholder="수량 입력"
+                      min="0"
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      가격
+                    </label>
+                    <input
+                      type="number"
+                      name="productPrice"
+                      value={formData.productPrice}
+                      onChange={handleChange}
+                      placeholder="가격 입력"
+                      min="0"
+                      className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="mt-16 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                등록
+              </button>
+            </div>
+              </div>
+            </div>
+
+           
+          </form>
         </div>
-      );
+      </Modal>
+    </div>
+  );
 }
 export default ProductInsertModal;
