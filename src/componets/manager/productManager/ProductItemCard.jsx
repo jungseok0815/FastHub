@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import ProductInsertModal from "./ProductInsertModal"
 
 const ProductList = ({ products }) => {
@@ -8,7 +8,7 @@ const ProductList = ({ products }) => {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
+ 
   const handleDetail = (product) =>{
     serProduct(product); 
     handleOpenModal()

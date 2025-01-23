@@ -1,4 +1,4 @@
-import { Children, useState } from "react";
+import {useState,useEffect } from "react";
 import Modal from "../../modal/Modal";
 import api from "../../../config/ApiConfig";
 import { ImagePlus } from 'lucide-react'
@@ -6,6 +6,7 @@ import { ImagePlus } from 'lucide-react'
 
 const ProductInsertModal = ({ isOpen, onClose, product }) => {
   const [formData, setFormData] = useState({
+    id : "",
     productNm: "",
     productPrice : "",
     productQuantity : "",
@@ -17,6 +18,32 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
 
   const [imagePreview, setImagePreview] = useState([]);
 
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        id : product.id || "",
+        productNm: product.productNm || "",
+        productPrice: product.productPrice || "",
+        productQuantity: product.productQuantity || "",
+        productBrand: product.productBrand || "",
+        productCode: product.productCode || "",
+        category: product.category || "",
+        image: []
+      });
+
+      if(product.images.length > 0){
+        const produtImgs = product.images.map((img) => {
+         return `http://localhost:8080/api/img/get?imgNm=${img.imgNm}`
+        })
+        setImagePreview(produtImgs)
+      }
+
+    }
+
+
+}, [product])
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -24,6 +51,7 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
       [name]: value
     }));
   };
+
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -33,7 +61,6 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
         ...prev,
         image: files
       }));
-      
       const previewUrls = files.map((file) => URL.createObjectURL(file));
       setImagePreview(previewUrls);
     }
@@ -41,21 +68,42 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData)
       api.post("/api/product/insert", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-
       }).then(res => {
         if (res.status === 200) {
           alert("상품등록 성공!")
           onClose();
         }
       }).catch((err) => {
-        alert("상품등록 실패패")
+        alert("상품등록 실패")
         console.log(err)
       })
   };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    console.log("update!!!")
+    console.log(formData)
+    api.put("/api/product/update", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+
+    }).then(res => {
+      if (res.status === 200) {
+        alert("상품 수정 성공!")
+        onClose();
+      }
+    }).catch((err) => {
+      alert("상품 수정 실패")
+      console.log(err)
+    })
+  }
+  
   return (
     <div >
       <Modal
@@ -64,7 +112,7 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
         width="800px"
         height="500px">
         <div className="bg-white rounded-lg w-full max-w-4xl">
-          <form onSubmit={handleSubmit} className="p-6">
+         <form  onSubmit={product ? handleUpdate : handleSubmit} className="p-6">
             <h2 className="text-2xl font-semibold mb-4">상품 등록</h2>
 
             <div className="flex gap-6">
@@ -83,7 +131,6 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
                       name="image"
                       accept="image/*"
                       onChange={handleImageChange}
-                      required
                     />
                     <label
                       htmlFor="imageUpload"
@@ -217,6 +264,31 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
                   </div>
                 </div>
                 <div className="mt-16 flex justify-end space-x-2">
+              {!product  && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  등록
+                </button>
+              )}
+              {product  && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  수정
+                </button>
+              )}
+               <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                삭제
+              </button>
+           
+
               <button
                 type="button"
                 onClick={onClose}
@@ -224,12 +296,7 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
               >
                 취소
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                등록
-              </button>
+           
             </div>
               </div>
             </div>

@@ -20,7 +20,7 @@ const ProductManagement = () => {
           </button>
       </div>
       <Content/>
-      <ProductInsertModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+      <ProductInsertModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>;
 };
 
