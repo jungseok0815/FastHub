@@ -1,12 +1,12 @@
 
 import './App.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
-import Login from './page/login/loginMain';
-import Main from './page/main/main';
-import Manager from './page/manager/Manager';
-import ProductItemCard from './componets/manager/productManager/ProductItemCard';
+
+import Main from './page/user/userMain/UserMain';
+import Admin from './page/admin/AdminMainPage';
+import Auth from './page/auth/AuthPage';
 import PrivateMasterRoute from './Route/PrivateMasterRoute';
-import { AuthProvider } from './config/Context/UserContext'; 
+import { AuthProvider } from './stores/context/UserContext'; 
 
 function App() {
 
@@ -17,9 +17,8 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path='/' element={<Main/>}/>
-                  <Route path='/login' element={<Login/>}/>
-                  <Route path='/test' element={<ProductItemCard/>}/>
-                  <Route path='/admin' element={<PrivateMasterRoute component={<Manager />}/>}/>
+                  <Route path='/auth' element={<Auth/>}/>
+                  <Route path='/admin' element={<PrivateMasterRoute component={<Admin />}/>}/>
                   </Routes>
               </BrowserRouter>  
             </AuthProvider>
