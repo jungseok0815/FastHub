@@ -10,7 +10,7 @@ const BrandManagement = () => {
   return <div>
       <BrandManagementSearchbar />
       <div className='productManagerInsert'>
-          <InsertButton onClick={handleOpenModal} children={"브랜드드 등록"}/>
+          <InsertButton onClick={handleOpenModal} children={"브랜드 등록"}/>
       </div>
   </div>;
 };

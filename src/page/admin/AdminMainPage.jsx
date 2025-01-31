@@ -6,7 +6,7 @@ import ProductManagement from '../admin/productManagement/ProductManagement';
 import BrandManagement from '../admin/brandManagement/BrandManagement';
 import OrderManagement from '../admin/orderManagement/OrderManagement';
 import SalesManagement from '../admin/saleManagement/SalesManagement';
-function manager(){
+function Admin(){
   const [activePage, setActivePage] = useState('상품 관리');
 
   // 메뉴에 따른 컴포넌트 동적 렌더링
@@ -62,4 +62,4 @@ function manager(){
     </div>
   );
 }
-export default manager;
+export default Admin;

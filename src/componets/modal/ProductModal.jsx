@@ -1,12 +1,12 @@
 import {useState,useEffect } from "react";
-import Modal from "../../modal/Modal";
-import { insertProuct, updateProduct, delteProduct} from "../../../api/product";
+import Modal from "./Modal";
+import { insertProuct, updateProduct, delteProduct} from "../../api/product";
 import { ImagePlus } from 'lucide-react'
-import { CancelButton, DeleteButton, SubmitButton } from "../button/button";
+import { CancelButton, DeleteButton, SubmitButton } from "../admin/button/button";
 
+const ProductModal = ({ isOpen, onClose, product }) => {
 
-const ProductInsertModal = ({ isOpen, onClose, product }) => {
-  const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
     id : "",
     productNm: "",
     productPrice : "",
@@ -291,8 +291,7 @@ const ProductInsertModal = ({ isOpen, onClose, product }) => {
           </form>
         </div>
       </Modal>
-      
     </div>
   );
 }
-export default ProductInsertModal;
+export default ProductModal;

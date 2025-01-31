@@ -6,7 +6,8 @@ import Main from './page/user/userMain/UserMain';
 import Admin from './page/admin/AdminMainPage';
 import Auth from './page/auth/AuthPage';
 import PrivateMasterRoute from './Route/PrivateMasterRoute';
-import { AuthProvider } from './stores/context/UserContext'; 
+import { AuthProvider } from './stores/context/UserContext';
+
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
                   </Routes>
               </BrowserRouter>  
             </AuthProvider>
+          
           </div>
       </div>
    

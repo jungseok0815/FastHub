@@ -5,7 +5,9 @@ export const insertProuct = (insertForm) => {
         headers : {
             'Content-Type': 'multipart/form-data'
         }
-    })
+    } 
+ 
+)
 }
 
 export const updateProduct = (updateForm) =>{
@@ -13,11 +15,13 @@ export const updateProduct = (updateForm) =>{
         headers: {
             'Content-Type': 'multipart/form-data'
           }
-    })    
+    }
+ 
+)    
 }
 
-export const delteProduct = (podructNo) =>{
-    return api.delete("/api/product/delete",podructNo)    
+export const delteProduct = (productNo) =>{
+    return api.delete(`/api/product/delete?id=${productNo}`)
 }
 
 export const listProduct =  () =>{
