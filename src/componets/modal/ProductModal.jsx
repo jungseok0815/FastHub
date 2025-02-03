@@ -1,12 +1,12 @@
 import {useState,useEffect } from "react";
 import Modal from "./Modal";
-import { insertProuct, updateProduct, delteProduct} from "../../api/product";
+import { InsertProuct, UpdateProduct, DelteProduct} from "../../api/product";
 import { ImagePlus } from 'lucide-react'
-import { CancelButton, DeleteButton, SubmitButton } from "../admin/button/button";
+import { CancelButton, DeleteButton, SubmitButton } from "../admin/button/Button";
 
-const ProductModal = ({ isOpen, onClose, product }) => {
-
-    const [formData, setFormData] = useState({
+const ProductModal = ({ isOpen, onClose, updateProduct,product }) => {
+ 
+  const [formData, setFormData] = useState({
     id : "",
     productNm: "",
     productPrice : "",
@@ -39,9 +39,19 @@ const ProductModal = ({ isOpen, onClose, product }) => {
         setImagePreview(produtImgs)
       }
 
+    }else{
+      setFormData({
+        id : "",
+        productNm: "",
+        productPrice: "",
+        productQuantity: "",
+        productBrand: "",
+        productCode: "",
+        category:  "",
+        image: []
+      });
+      setImagePreview([])
     }
-
-
 }, [product])
 
 
@@ -69,10 +79,11 @@ const ProductModal = ({ isOpen, onClose, product }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-      insertProuct(formData)
+      InsertProuct(formData)
       .then(res => {
         if (res.status === 200) {
           alert("상품등록 성공!")
+          updateProduct()
           onClose();
         }
       }).catch((err) => {
@@ -83,10 +94,11 @@ const ProductModal = ({ isOpen, onClose, product }) => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    updateProduct(formData).
+    UpdateProduct(formData).
       then(res => {
       if (res.status === 200) {
         alert("상품 수정 성공!")
+        updateProduct()
         onClose();
       }
     }).catch((err) => {
@@ -98,10 +110,11 @@ const ProductModal = ({ isOpen, onClose, product }) => {
   const handlerDeleteProduct = (e) => {
     e.preventDefault();
     if(window.confirm("해당 상품을 삭제 하시겠습니까?")){
-      delteProduct(formData.id)
+      DelteProduct(formData.id)
       .then(res => {
         if (res.status === 200) {
           alert("상품 삭제 성공!")
+          updateProduct()
           onClose();
         }
       }).catch((err) => {
@@ -291,6 +304,7 @@ const ProductModal = ({ isOpen, onClose, product }) => {
           </form>
         </div>
       </Modal>
+      
     </div>
   );
 }

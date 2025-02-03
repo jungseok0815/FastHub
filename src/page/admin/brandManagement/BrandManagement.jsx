@@ -1,6 +1,6 @@
 import React from 'react';
 import BrandManagementSearchbar from "./BrandManagementSearchbar"
-import { InsertButton } from '../../../componets/admin/button/button';
+import { InsertButton } from '../../../componets/admin/button/Button';
 const BrandManagement = () => {
   const handleOpenModal = () =>{
     console.log("testOpenModal")

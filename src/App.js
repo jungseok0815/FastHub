@@ -1,7 +1,6 @@
 
 import './App.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
-
 import Main from './page/user/userMain/UserMain';
 import Admin from './page/admin/AdminMainPage';
 import Auth from './page/auth/AuthPage';

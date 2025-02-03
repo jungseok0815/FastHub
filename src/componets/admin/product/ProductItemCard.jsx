@@ -1,10 +1,10 @@
-import {React, useState, useEffect} from 'react';
-import ProductInsertModal from "./ProductInsertModal"
+import {React} from 'react';
 
-const ProductList = ({ product, test }) => {
+
+const ProductList = ({ product, openModal }) => {
 
   return (
-    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" onClick={test}>
+    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" onClick={() => {openModal(product)}}>
       <div className="relative h-48">
         <img
           src={product.images.length === 0 ? "/api/placeholder/400/320" :`http://localhost:8080/api/img/get?imgNm=${product.images[0].imgNm}`}
