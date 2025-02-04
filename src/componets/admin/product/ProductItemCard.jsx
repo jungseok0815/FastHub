@@ -2,7 +2,6 @@ import {React} from 'react';
 
 
 const ProductList = ({ product, openModal }) => {
-
   return (
     <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" onClick={() => {openModal(product)}}>
       <div className="relative h-48">

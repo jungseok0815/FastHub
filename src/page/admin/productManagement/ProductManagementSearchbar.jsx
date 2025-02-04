@@ -1,24 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../../styles/admin/productManagement/ProductManagementSearchbar.css"
 import { SearchBar } from "../../../componets/admin/searchbar/Searchbar.jsx";
-import { ListProduct } from "../../../api/product.jsx";
-const ProductManagerSearchbar = ({onChange}) => {
 
-    useEffect(() => {
-      if(searchTerm.length >= 3){
-        ListProduct(searchTerm)
-        .then((res) => { 
-          if(res.status === 200){
-            console.log(res.data)
-          }
-        })
-      }
-    },[searchTerm])
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-      };
-    
+const ProductManagerSearchbar = ({searchTerm, onChange}) => {
     const handleCategoryChange = (e) =>{
       e.preventDefault();
     }
@@ -37,7 +21,7 @@ const ProductManagerSearchbar = ({onChange}) => {
           </select>
 
         <SearchBar 
-            onChange={handleSearchChange}
+            onChange={onChange}
             placeholder="상품을 입력하세요"
             value={searchTerm}
             width="500px"

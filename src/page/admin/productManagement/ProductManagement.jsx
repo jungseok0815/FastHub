@@ -1,10 +1,12 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useRef} from 'react';
 import SearchBar from "./ProductManagementSearchbar";
 import Content from "./ProductManagementContent"
 import ProducttModal from "../../../componets/modal/ProductModal"
 import "../../../styles/admin/productManagement/ProductManagement.css"
 import { InsertButton } from '../../../componets/admin/button/Button';
 import { ListProduct } from '../../../api/product';
+import UseUpdateEffect from '../../../hooks/UseDidMountEffect';
+
 
 const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +14,8 @@ const ProductManagement = () => {
   const [updateProduct, setUpdateProduct] = useState(false)
   const [product, setProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0);
+
 
   // 초기 상품 리스트 조회
   useEffect(() => {fetchProducts()}, [])
@@ -24,15 +28,23 @@ const ProductManagement = () => {
     }
   },[updateProduct])
 
-  useEffect(()=> {
-    
-  })
+
+  UseUpdateEffect(()=>{
+    ListProduct(searchTerm).then((res)=>{
+      if(res.status === 200) setProducts(res.data.data.content)
+    })
+  },[searchTerm])
+
+  UseUpdateEffect(()=>{
+    console.log("tetete1111")
+  },[page])
+ 
 
   //product list를 호출하는 api
   const fetchProducts =  async () => {
     try {
         const response = await ListProduct(null);
-        setProducts(response.data.data);
+        setProducts(response.data.data.content);
     } catch (error) {
         console.error("상품 목록 조회 실패:", error);
     }
@@ -46,7 +58,7 @@ const ProductManagement = () => {
     }else{
       setProduct(null)
     }
-};  
+  };  
   //모달이 닫히도록 상태가을 변경
   const handleCloseModal = () => setIsModalOpen(false);
   
@@ -57,7 +69,7 @@ const ProductManagement = () => {
 
 
   return <div>
-      <SearchBar onChange={handleChangeSearchTerm}/>
+      <SearchBar searchTerm={searchTerm} onChange={handleChangeSearchTerm}/>
       <div className='productManagerInsert'>
         <InsertButton onClick={() => handleOpenModal(false)} children={"상품 등록"}/>
       </div>
