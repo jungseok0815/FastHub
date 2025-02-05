@@ -1,17 +1,10 @@
 import React from 'react';
 import BrandManagementSearchbar from "./BrandManagementSearchbar"
-import { InsertButton } from '../../../componets/admin/button/Button';
+import BrandManagementContent from './BrandManagementContent';
 const BrandManagement = () => {
-  const handleOpenModal = () =>{
-    console.log("testOpenModal")
-  }
- 
-
   return <div>
       <BrandManagementSearchbar />
-      <div className='productManagerInsert'>
-          <InsertButton onClick={handleOpenModal} children={"브랜드 등록"}/>
-      </div>
+      <BrandManagementContent />
   </div>;
 };
 

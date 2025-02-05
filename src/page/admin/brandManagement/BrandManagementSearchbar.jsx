@@ -13,7 +13,7 @@ const ProductManagerSearchbar = () => {
       <div className="navbar-content">
         <SearchBar 
             onKeyup={handleSearchChange}
-            placeholder="상품을 입력하세요"
+            placeholder="브랜드명을 입력하세요"
             value={searchTerm}
             width="500px"
         />

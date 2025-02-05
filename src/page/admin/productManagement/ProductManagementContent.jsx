@@ -8,8 +8,8 @@ const ProductManagerContent = ({products, openModal}) => {
       <div className="container mx-auto  px-4 py-7">
         <h2 className="text-xl font-bold text-gray-500 mb-6">상품 목록</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (     
-                <ProductItem product={product} openModal ={openModal}/>
+            {products.map((product,index) => (     
+                <ProductItem key={index} product={product} openModal ={openModal} id={index}/>
             ))}
         </div>
       </div>
