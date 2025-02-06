@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import BrandItemCard from './BrandItemCard';
 
 const BrandInsertAccordion = () => {
-    const [activeIndex, setActiveIndex] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(true);
 
     const handleChageActive = () => {
         setActiveIndex(!activeIndex)
